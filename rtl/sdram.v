@@ -165,7 +165,7 @@ always @(posedge CLK or negedge RESET) begin
             
             if ((ready | can_start) == 1'b0) begin 
 
-                address <= { A[23:11] };
+                address <= { A[24:12] };
 
                 if (refresh_req == 1'b0) begin 
 
@@ -179,9 +179,9 @@ always @(posedge CLK or negedge RESET) begin
                     can_start <= 1'b1; 
                     cycle[0] <= 'd1;
 
-                    address <= { A[23:11] };
+                    address <= { A[24:12] };
                     command <= CMD_ACTIVE;
-                    bank <= A[25:24];
+                    bank <= A[26:25];
                 
                 end
 
@@ -205,16 +205,16 @@ always @(posedge CLK or negedge RESET) begin
                 
                 CYCLE_ACCESS_RW: begin 
                     
-                    address[8:0] <= { A[10:4], RAMA };
-                    address[12:9] <= RW30 ?  4'b0000 : 4'b0010;
+                    address[9:0] <= { A[11:4], RAMA };
+                    address[12:10] <= RW30 ?  3'b000 : 3'b001;
                     command <= RW30 ? CMD_READ : CMD_WRITE;
                     WAIT_BLOCK <= 'b0;
                     end                    
 
                 CYCLE_ACCESS_COMPLETE: begin 
                     
-                    address[8:0] <= { A[10:4], RAMA };
-                    address[12:9] <= BURST_ENDING ? 4'b0010 : 4'b0000; // AUTO PRECHARGE ?
+                    address[9:0] <= { A[11:4], RAMA };
+                    address[12:10] <= BURST_ENDING ? 3'b001 : 3'b000; // AUTO PRECHARGE ?
                     command <= RW30 ? CMD_READ : CMD_NOP;
                     BCOUNT <= BCOUNT + 'd1;
                     cycle <= BURST_ENDING ? 'd0 : CYCLE_ACCESS_BW1[3:0];

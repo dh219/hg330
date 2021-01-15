@@ -121,7 +121,7 @@ reg ram_access;
 reg PUNT_INT;
 wire CPUSPACE = &FC;
 wire FPUOP = CPUSPACE & ({A[19:16]} === {4'b0010});
-wire ram_decode = ({A[31:26]} != {6'b0100_00});
+wire ram_decode = ({A[31:27]} != {5'b0100_0});
 
 wire GAYLE_IDE;
 wire DTACK_IDE;
