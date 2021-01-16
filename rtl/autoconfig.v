@@ -86,7 +86,7 @@ always @(negedge DS20 or negedge RESET) begin
             // autoconfig ROMs
             case (zaddr)
                 'h00: data_out[7:4] <= 4'ha;
-                'h01: data_out[7:4] <= 4'h2;
+                'h01: data_out[7:4] <= 4'h3; // Go0se - 128MB extended Z3 config size
                 'h03: data_out[7:4] <= 4'hc;
                 'h04: data_out[7:4] <= 4'h4;
                 'h08: data_out[7:4] <= 4'he;
@@ -104,7 +104,7 @@ end
 
 // decode the base addresses
 // these are hardcoded to the address they always get assigned to.
-assign DECODE = ({A[31:26]} != {6'b0100_00}) | shutup;
+assign DECODE = ({A[31:27]} != {5'b0100_0}) | shutup;  // Go0se - not passed back to 330 main_top
 
 assign ACCESS = Z2_ACCESS;
 assign DOUT = data_out;
